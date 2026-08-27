@@ -1,0 +1,40 @@
+name: Publish to MCP Registry
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out public metadata
+        uses: actions/checkout@v5
+
+      - name: Verify production MCP endpoint
+        run: |
+          response=$(curl --fail --silent --show-error https://vaultvision.tech/mcp \
+            -H 'Content-Type: application/json' \
+            -H 'MCP-Protocol-Version: 2026-07-28' \
+            -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}')
+          test "$(jq '.result.tools | length' <<<"$response")" -eq 9
+          test "$(jq '[.result.tools[].annotations.readOnlyHint] | all' <<<"$response")" = "true"
+
+      - name: Install MCP publisher
+        run: |
+          curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+
+      - name: Validate registry metadata
+        run: ./mcp-publisher validate server.json
+
+      - name: Authenticate with GitHub OIDC
+        run: ./mcp-publisher login github-oidc
+
+      - name: Publish remote server metadata
+        run: ./mcp-publisher publish server.json
