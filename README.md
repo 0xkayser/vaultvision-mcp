@@ -4,6 +4,7 @@ Public connection metadata and usage notes for the VaultVision read-only
 Hyperliquid vault research server.
 
 - MCP endpoint: <https://vaultvision.tech/mcp>
+- Official MCP Registry: <https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.0xkayser/vaultvision>
 - Setup and tool reference: <https://vaultvision.tech/developers#agents>
 - Live scanner: <https://vaultvision.tech/vaults/scanner>
 - OpenAPI contract: <https://vaultvision.tech/openapi.json>
@@ -50,6 +51,10 @@ custom connector**. Team and Enterprise owners can add the same URL under
 
 For other clients, create a remote MCP connection named `VaultVision` with the
 URL above. The server is public and does not require credentials.
+
+The published Registry identifier is `io.github.0xkayser/vaultvision`. The
+Registry entry is released from this repository through GitHub Actions using
+OIDC, so no long-lived registry token is stored in the repository.
 
 ## Verify the server
 
