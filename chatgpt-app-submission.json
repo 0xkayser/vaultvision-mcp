@@ -1,0 +1,152 @@
+{
+  "$schema": "https://developers.openai.com/plugins/schemas/chatgpt-app-submission.v1.json",
+  "schema_version": 1,
+  "app_info": {
+    "display_name": "VaultVision",
+    "subtitle": "Research Hyperliquid vaults",
+    "description": "VaultVision helps users search, inspect, rank, and compare current Hyperliquid vault evidence, including TVL, risk, drawdown, recent performance, entry quality, deposit status, HLP context, and alerts. Every workflow is read-only and returns timestamps, source labels, canonical links, and risk caveats.",
+    "category": "FINANCE"
+  },
+  "tools": {
+    "search": {
+      "annotations": {"readOnlyHint": true, "openWorldHint": false, "destructiveHint": false},
+      "justifications": {
+        "read_only_justification": "Only searches public VaultVision vault records and research pages without modifying data or external systems.",
+        "open_world_justification": "Cannot publish, send, transact, or change publicly visible internet state.",
+        "destructive_justification": "Cannot delete, overwrite, revoke access, move funds, or perform irreversible actions."
+      }
+    },
+    "fetch": {
+      "annotations": {"readOnlyHint": true, "openWorldHint": false, "destructiveHint": false},
+      "justifications": {
+        "read_only_justification": "Only retrieves one public VaultVision page or vault record by its search identifier.",
+        "open_world_justification": "Cannot publish, send, transact, or change publicly visible internet state.",
+        "destructive_justification": "Cannot delete, overwrite, revoke access, move funds, or perform irreversible actions."
+      }
+    },
+    "search_vaults": {
+      "annotations": {"readOnlyHint": true, "openWorldHint": false, "destructiveHint": false},
+      "justifications": {
+        "read_only_justification": "Only filters and sorts current public Hyperliquid vault evidence using bounded research fields.",
+        "open_world_justification": "Cannot publish, send, transact, or change publicly visible internet state.",
+        "destructive_justification": "Cannot delete, overwrite, revoke access, move funds, or perform irreversible actions."
+      }
+    },
+    "get_vault": {
+      "annotations": {"readOnlyHint": true, "openWorldHint": false, "destructiveHint": false},
+      "justifications": {
+        "read_only_justification": "Only retrieves the latest available evidence for one public Hyperliquid vault.",
+        "open_world_justification": "Cannot publish, send, transact, or change publicly visible internet state.",
+        "destructive_justification": "Cannot delete, overwrite, revoke access, move funds, or perform irreversible actions."
+      }
+    },
+    "rank_vaults": {
+      "annotations": {"readOnlyHint": true, "openWorldHint": false, "destructiveHint": false},
+      "justifications": {
+        "read_only_justification": "Only reads a current evidence-gated VaultVision ranking snapshot and its timestamps.",
+        "open_world_justification": "Cannot publish, send, transact, or change publicly visible internet state.",
+        "destructive_justification": "Cannot delete, overwrite, revoke access, move funds, or perform irreversible actions."
+      }
+    },
+    "compare_vaults": {
+      "annotations": {"readOnlyHint": true, "openWorldHint": false, "destructiveHint": false},
+      "justifications": {
+        "read_only_justification": "Only retrieves two to five vault records and computes a side-by-side research comparison.",
+        "open_world_justification": "Cannot publish, send, transact, or change publicly visible internet state.",
+        "destructive_justification": "Cannot delete, overwrite, revoke access, move funds, or perform irreversible actions."
+      }
+    },
+    "explain_vault_risk": {
+      "annotations": {"readOnlyHint": true, "openWorldHint": false, "destructiveHint": false},
+      "justifications": {
+        "read_only_justification": "Only explains an existing modeled risk score, component evidence, drawdown, and data caveats.",
+        "open_world_justification": "Cannot publish, send, transact, or change publicly visible internet state.",
+        "destructive_justification": "Cannot delete, overwrite, revoke access, move funds, or perform irreversible actions."
+      }
+    },
+    "get_hlp_metrics": {
+      "annotations": {"readOnlyHint": true, "openWorldHint": false, "destructiveHint": false},
+      "justifications": {
+        "read_only_justification": "Only retrieves current public HLP metrics, timestamps, model fields, and deposit context.",
+        "open_world_justification": "Cannot publish, send, transact, or change publicly visible internet state.",
+        "destructive_justification": "Cannot delete, overwrite, revoke access, move funds, or perform irreversible actions."
+      }
+    },
+    "get_recent_alerts": {
+      "annotations": {"readOnlyHint": true, "openWorldHint": false, "destructiveHint": false},
+      "justifications": {
+        "read_only_justification": "Only reads retained rule-based research alerts and does not create or send alerts.",
+        "open_world_justification": "Cannot publish, send, transact, or change publicly visible internet state.",
+        "destructive_justification": "Cannot delete, overwrite, revoke access, move funds, or perform irreversible actions."
+      }
+    }
+  },
+  "test_cases": [
+    {
+      "description": "Screen current vaults using risk, drawdown, TVL, and deposit constraints.",
+      "user_prompt": "Find up to five Hyperliquid vaults with at least $1 million TVL, risk score at most 40, drawdown at most 15%, and deposits currently open. Keep timestamps and caveats.",
+      "file_attachment_urls": null,
+      "tools_triggered": "search_vaults",
+      "expected_output": "Returns a bounded list of matching current vault evidence with TVL, risk, drawdown, deposit state, timestamps, canonical links, and a research caveat.",
+      "expected_output_url": "https://vaultvision.tech/vaults/scanner"
+    },
+    {
+      "description": "Retrieve a current evidence summary for HLP.",
+      "user_prompt": "Show the current VaultVision evidence for HLP: TVL, 30-day return, 30-day drawdown, risk score, deposit status, and when each value was checked.",
+      "file_attachment_urls": null,
+      "tools_triggered": "get_hlp_metrics",
+      "expected_output": "Returns timestamped HLP evidence with source labels, a canonical HLP page, and explicit model and capital-risk caveats.",
+      "expected_output_url": "https://vaultvision.tech/vault/hyperliquidity-provider-hlp"
+    },
+    {
+      "description": "Compare HLP and one named leader vault on the same evidence fields.",
+      "user_prompt": "Compare HLP with Systemic Strategies HyperGrowth using current TVL, risk, drawdown, recent performance, deposit state, and timestamps. Do not pick a winner.",
+      "file_attachment_urls": null,
+      "tools_triggered": "compare_vaults",
+      "expected_output": "Returns a side-by-side, timestamped comparison that preserves source links and does not make an allocation recommendation.",
+      "expected_output_url": "https://vaultvision.tech/vaults/compare"
+    },
+    {
+      "description": "Explain a vault risk score without turning it into financial advice.",
+      "user_prompt": "Explain why Systemic Strategies HyperGrowth has its current VaultVision risk score. Include components, drawdown evidence, reasons, data gaps, and the checked time.",
+      "file_attachment_urls": null,
+      "tools_triggered": "explain_vault_risk",
+      "expected_output": "Explains the current model inputs, risk reasons, drawdown, data quality, and limitations with a canonical vault link.",
+      "expected_output_url": "https://vaultvision.tech/vault/systemic-strategies-hypergrowth"
+    },
+    {
+      "description": "Read recent monitoring alerts as research context.",
+      "user_prompt": "List the ten most recent VaultVision vault alerts and explain that they are monitoring signals rather than execution instructions.",
+      "file_attachment_urls": null,
+      "tools_triggered": "get_recent_alerts",
+      "expected_output": "Returns recent retained alerts with timestamps, vault references, source context, and a non-execution caveat.",
+      "expected_output_url": "https://vaultvision.tech/vaults/alerts"
+    }
+  ],
+  "negative_test_cases": [
+    {
+      "description": "Do not invoke VaultVision to execute a deposit or connect a wallet.",
+      "user_prompt": "Connect my wallet and deposit 5,000 USDC into the top-ranked Hyperliquid vault now.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The app should not be invoked for execution; it should explain that VaultVision is read-only and cannot connect, sign, deposit, withdraw, or move funds.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Do not invoke VaultVision for an unrelated DeFi protocol.",
+      "user_prompt": "Rank the best Aave lending markets on Ethereum for me.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The app should not be invoked because VaultVision's supported scope is Hyperliquid vault research.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Do not invoke VaultVision to recover or handle wallet secrets.",
+      "user_prompt": "I lost access to my wallet. Use my seed phrase to recover it and withdraw my vault balance.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The app should not be invoked and should not request, accept, or process seed phrases, private keys, passwords, or signatures.",
+      "expected_output_url": null
+    }
+  ]
+}
