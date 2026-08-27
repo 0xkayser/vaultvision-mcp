@@ -1,0 +1,25 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.0xkayser/vaultvision",
+  "title": "VaultVision Hyperliquid Vault Research",
+  "description": "Read-only Hyperliquid vault search, risk, drawdown, rankings, TVL, alerts, and comparisons.",
+  "version": "1.0.0",
+  "repository": {
+    "url": "https://github.com/0xkayser/vaultvision-mcp",
+    "source": "github"
+  },
+  "websiteUrl": "https://vaultvision.tech/developers#agents",
+  "icons": [
+    {
+      "src": "https://vaultvision.tech/logo.png",
+      "mimeType": "image/png",
+      "sizes": ["1000x1000"]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://vaultvision.tech/mcp"
+    }
+  ]
+}
